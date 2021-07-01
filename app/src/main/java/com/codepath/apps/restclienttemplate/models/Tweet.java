@@ -21,16 +21,23 @@ public class Tweet {
     public String body;
     public String createdAt;
     public User user;
+    public String mediaUrl;
 
     // empty constructor needed for Parcel
     public Tweet() {}
 
     public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("text");
+        tweet.body = jsonObject.getString("full_text");
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
-
+        JSONObject entities = jsonObject.getJSONObject("entities");
+        if (entities.has("media")) {
+            JSONArray media = jsonObject.getJSONObject("entities").getJSONArray("media");
+            tweet.mediaUrl = media.getJSONObject(0).getString("media_url_https");
+        } else {
+            tweet.mediaUrl = "";
+        }
         return tweet;
     }
 
