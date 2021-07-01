@@ -40,6 +40,9 @@ public class ComposeActivity extends AppCompatActivity {
         etCompose = findViewById(R.id.etCompose);
         btnTweet = findViewById(R.id.btnTweet);
 
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.twitter_logo_white);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // Set click listener on button
         btnTweet.setOnClickListener(new View.OnClickListener() {
             @Override

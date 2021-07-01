@@ -39,6 +39,9 @@ public class TimelineActivity extends AppCompatActivity {
     List<Tweet> tweets;
     TweetsAdapter adapter;
 
+    // Instance of the progress action-view
+    MenuItem miActionProgressItem;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,8 +129,28 @@ public class TimelineActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgress);
+
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            showProgressBar();
             // Get the data from the intent (tweet)
             Tweet tweet = Parcels.unwrap(data.getParcelableExtra("tweet"));
             // Update the RV with the tweet
@@ -137,6 +160,7 @@ public class TimelineActivity extends AppCompatActivity {
             adapter.notifyItemInserted(0);
             // Scroll to newly added position
             rvTweets.scrollToPosition(0);
+            hideProgressBar();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
