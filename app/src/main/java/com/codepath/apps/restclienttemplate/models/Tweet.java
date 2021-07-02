@@ -26,9 +26,9 @@ public class Tweet {
     // empty constructor needed for Parcel
     public Tweet() {}
 
-    public static Tweet fromJson(JSONObject jsonObject) throws JSONException {
+    public static Tweet fromJson(JSONObject jsonObject, String body_name) throws JSONException {
         Tweet tweet = new Tweet();
-        tweet.body = jsonObject.getString("full_text");
+        tweet.body = jsonObject.getString(body_name);
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         JSONObject entities = jsonObject.getJSONObject("entities");
@@ -44,7 +44,7 @@ public class Tweet {
     public static List<Tweet> fromJsonArray(JSONArray jsonArray) throws JSONException {
         List<Tweet> tweets = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
-            tweets.add(fromJson(jsonArray.getJSONObject(i)));
+            tweets.add(fromJson(jsonArray.getJSONObject(i), "full_text"));
         }
 
         return tweets;
